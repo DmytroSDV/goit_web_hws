@@ -1,0 +1,75 @@
+{% extends "quotes/base.html"%}
+{% load decrease_px %}
+
+
+
+{% block content %}
+{% if quotes %}
+<div style="margin-bottom: 30px; margin-top: -55px">
+    <form method="get">
+        <p style="margin-left:-130px; margin-bottom: 5px"><strong>Seaching for tags</strong></p>
+        <input type="text" name="search_tags" style="width: 450px; margin-left: -130px; background-color: rgba(205, 212, 240, 0.895); border: 2px solid #000002; box-shadow: 0 0 10px #000;">
+        <input type="submit" value="Search" style="margin-left: 3px; width: 100px" class="btn btn-secondary">
+    </form>
+</div>
+
+<div class="row">
+<div class="col-md-8" style="margin-top: -5px; margin-left: 50px">
+
+    {% for quote in quotes %}
+    <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <span class="text" itemprop="text">{{quote.quote}}</span>
+        <span>by <small class="author" itemprop="author">{{quote.author.fullname}}</small>
+        <a href="{% url 'quotes:author_about' quote.author.fullname %}">(about)</a>
+        </span>
+        <div class="tags">
+            Tags:
+            {% for tag in quote.tags.all %}
+                <a class="tag" href="/tag/{{tag.name}}/">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+
+    <nav>
+        <ul class="pager">
+            
+            <li class="previous">
+                <a class="{% if not quotes.has_previous %} disabled {% endif %}"
+                href="{% if quotes.has_previous %} {% url 'quotes:root_paginate' quotes.previous_page_number %} {% else %} # {% endif %}">
+                    <span aria-hidden="true">←</span> Previous
+                </a>
+            </li>
+            
+            
+            <li class="next">
+                <a class="{% if not quotes.has_next %} disabled {% endif %}"
+                href="{% if quotes.has_next %} {% url 'quotes:root_paginate' quotes.next_page_number %} {% else %} # {% endif %}">
+                Next <span aria-hidden="true">→</span>
+                </a>
+            </li>
+            
+        </ul>
+    </nav>            
+</div>
+
+    <div class="tags-box col-md-3">
+
+    <div><h2>Top Ten tags</h2></div>
+        
+        {% for tag in top_ten_tags %}
+        <div class="tag-item">
+            {% decreasing_font_size 35 3 forloop.counter as font_size %}
+            <a class="tag" style="font-size: {{ font_size }}px" href="/tag/{{tag.name}}/">{{ tag.name }}</a>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% else %}
+    <div style="text-align: center; margin-top: 50px">
+        <h1>No quotes found</h1>
+        <a href="{% url 'quotes:get_data' %}" class="btn btn-primary" style="width: 300px; height: 70px; font-size: 30px; text-align: center;">Scrape data</a>
+    </div>
+{% endif %}
+{% endblock %}

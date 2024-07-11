@@ -1,0 +1,68 @@
+{% extends "quotes/base.html" %}
+
+{% block content %}
+
+<div>
+    <h1 style="margin-left: 185px; margin-top: -100px">Profile page: {{user.username}}</h1>
+    <div class="image-container" style="margin-left: 185px">
+    <img src="{{ user.profile.avatar.url }}" alt="avatar of user" />
+</div>
+</div>
+
+{% if messages %}
+<div>
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert-{{ message.tags }}" {% endif %} style="margin-left: 100px; color:aqua">{{ message }}</div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-row">
+        <div class="col-md-5">
+            <div class="form-group" style="margin-left: -15px">
+                <label class="small mb-1">Change Avatar:</label>
+                {{ profile_form.avatar }}
+                <div class="grid">
+                    <button type="submit">Save Changes</button>
+                    <button type="reset" class="secondary">Reset</button>
+                </div>
+                <span style="margin-left: 100px; color: red">{{ profile_form.errors.avatar }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        {% if messages %}
+        <div>
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert-{{ message.tags }}" {% endif %} style="color: greenyellow">
+                <h3>{{ message }}</h3</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <h2 style="margin-top:20px"><strong>Created quotes by the user: {{user.username}}</strong></h2>
+        
+        {% for quote in quotes_user %}
+        <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <span class="text" itemprop="text">{{quote.quote}}</span>
+        <span>by <small class="author" itemprop="author">{{quote.author.fullname}}</small>
+        <a href="{% url 'quotes:author_about' quote.author.fullname %}">(about)</a>
+        </span>
+        <div class="tags">
+            Tags:
+            {% for tag in quote.tags.all %}
+                <a class="tag" href="/tag/{{tag.name}}/">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+        <a href="{% url 'users:edit_quote' quote.pk %}" style="width: 436px;" class="btn btn-primary">Edit</a>
+        <a href="{% url 'users:delete_quote' quote.pk %}" style="width: 436px;" class="btn btn-secondary">Delete</a>
+    </div>
+
+{% endfor %}
+    </div>
+</form>
+
+{% endblock content %}

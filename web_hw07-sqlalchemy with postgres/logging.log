@@ -1,0 +1,17 @@
+ERROR, 2024-02-15 19:16:42, module - 'custom_logger', function - 'log', line - '66'. Message - 'test message'
+ERROR, 2024-02-15 20:01:36, module - 'custom_logger', function - 'log', line - '66'. Message - 'Unable to insert data to the database!
+(psycopg2.errors.UndefinedTable) relation "groups" does not exist
+LINE 1: INSERT INTO groups (group_name) SELECT p0::VARCHAR FROM (VAL...
+                    ^
+
+[SQL: INSERT INTO groups (group_name) SELECT p0::VARCHAR FROM (VALUES (%(group_name__0)s, 0), (%(group_name__1)s, 1), (%(group_name__2)s, 2)) AS imp_sen(p0, sen_counter) ORDER BY sen_counter RETURNING groups.id, groups.id AS id__1]
+[parameters: {'group_name__0': 'Елітні Мислителі', 'group_name__1': 'Академічний Компас', 'group_name__2': 'Відкриті Горизонти'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)'
+ERROR, 2024-02-15 21:47:45, module - 'custom_logger', function - 'log', line - '66'. Message - 'Unable to update data in the database!
+(psycopg2.errors.InvalidTextRepresentation) invalid input syntax for type integer: "Vasya Pupovinka"
+LINE 1: UPDATE raiting SET rate='Vasya Pupovinka' WHERE raiting.id =...
+                                ^
+
+[SQL: UPDATE raiting SET rate=%(rate)s WHERE raiting.id = %(id_1)s]
+[parameters: {'rate': 'Vasya Pupovinka', 'id_1': 4}]
+(Background on this error at: https://sqlalche.me/e/20/9h9h)'

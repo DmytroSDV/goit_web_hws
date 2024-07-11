@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "web-hw04"
+version = "0.1.0"
+description = ""
+authors = ["DmytroSDV <sdmytrov11@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

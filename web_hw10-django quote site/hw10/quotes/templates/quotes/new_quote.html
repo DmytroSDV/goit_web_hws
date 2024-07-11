@@ -1,0 +1,39 @@
+{% extends 'quotes/base_for_forms.html' %}
+
+{% block content %}
+
+<h2 class="for-profile" style="margin-left: 100px">Add new quote</h2>
+<form method="post">
+    {% csrf_token %}
+    <div><strong>Quote: </strong></div>
+    <div>{{ form.quote }}</div>
+    <div class="row">
+        <strong>Choose tags: </strong>
+        <div class="col">
+            {% for tag in form.tags.field.queryset|slice:":50" %}
+                <label for="tag_{{ tag.id }}"><input type="checkbox" id="tag_{{ tag.id }}" name="tags" value="{{ tag.id }}"> {{ tag.name }}</label>
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for tag in form.tags.field.queryset|slice:"50:100" %}
+                <label for="tag_{{ tag.id }}"><input type="checkbox" id="tag_{{ tag.id }}" name="tags" value="{{ tag.id }}"> {{ tag.name }}</label>
+            {% endfor %}
+        </div>
+        <div class="col">
+            {% for tag in form.tags.field.queryset|slice:"100:" %}
+                <label for="tag_{{ tag.id }}"><input type="checkbox" id="tag_{{ tag.id }}" name="tags" value="{{ tag.id }}"> {{ tag.name }}</label>
+            {% endfor %}
+        </div>
+
+
+    <div>
+        <strong>Author:</strong> {{ form.author }}
+    </div>
+
+    <div>
+    <button type="submit" style="width: 250px;" class="btn btn-primary">Submit</button>
+    <button type="reset" style="width: 250px;" class="btn btn-secondary">Reset</button>
+    </div>
+
+</form>
+{% endblock %}
